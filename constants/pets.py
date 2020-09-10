@@ -670,5 +670,17 @@ PETS = {
         },
         'ability': None,
         'type': 'combat',
+    },
+    'GRIFFIN': {
+        'name': 'Griffin',
+        'stats': {
+            'crit chance': lambda lvl: lvl / 10,
+            'crit damage': lambda lvl: lvl / 2,
+            'strength': lambda lvl: lvl / 4,
+            'magic find': lambda lvl: lvl / 10,
+            'intelligence': lambda lvl: lvl / 10
+        },
+        'ability': None,
+        'type': 'combat'
     }
 }
