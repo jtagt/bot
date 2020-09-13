@@ -252,7 +252,7 @@ class OptimizeGear(commands.Cog, name='Damage'):
     @staticmethod
     async def prompt_for_armor(ctx, profile):
         if len(profile.wardrobe) > 1:
-            entries = []
+            entries = ['Your current equipped armor']
             for i, armor in enumerate(profile.wardrobe):
                 entries.append(f'{armor["helmet"]}\n'
                                f'{"".ljust(len(str(i + 1)) + 3)}{armor["chestplate"]}\n'
@@ -264,7 +264,13 @@ class OptimizeGear(commands.Cog, name='Damage'):
                 footer='You may enter the corresponding armor set number.',
                 per_page=3
             )
-            return profile.wardrobe[armor_index - 1]
+            if armor_index - 1 == 0:
+                if profile.current_armor:
+                    return profile.current_armor
+                else:
+                    return None
+            else:
+                return profile.wardrobe[armor_index - 1]
         else:
             if profile.current_armor:
                 return profile.current_armor
