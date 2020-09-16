@@ -682,5 +682,14 @@ PETS = {
         },
         'ability': None,
         'type': 'combat'
+    },
+    'MEGALODON': {
+        'name': 'Megalodon',
+        'stats': {
+            'strength': lambda lvl: lvl / 2,
+            'magic find': lambda lvl: lvl / 10
+        },
+        'ability': None,
+        'type': 'fishing'
     }
 }
