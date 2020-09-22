@@ -63,6 +63,9 @@ class Item:
                         self.dungeon_level = 0
                     self.type = last_line[2].lower()
 
+        if self.type == 'cutlass':
+            self.type = 'sword'
+
         # Load item from backpacks
         self.contents = None
         if self.internal_name == 'NEW_YEAR_CAKE_BAG' or self.internal_name.endswith('_BACKPACK'):
