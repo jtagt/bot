@@ -491,6 +491,15 @@ DAMAGE_REFORGES = {
             'epic': {'damage': 165, 'strength': 165 },
             'blacksmith': False
         },
+        'suspicious': {
+            'common': {'damage': 15, 'crit damage': 30, 'crit chance': 1},
+            'uncommon': {'damage': 15, 'crit damage': 40, 'crit chance': 2},
+            'rare': {'damage': 15, 'crit damage': 50, 'crit chance': 3},
+            'epic': {'damage': 15, 'crit damage': 65, 'crit chance': 5},
+            'legendary': {'damage': 15, 'crit damage': 85, 'crit chance': 7},
+            'mythic': {'damage': 15, 'crit damage': 110, 'crit chance': 10},
+            'blacksmith': False
+        },
     },
     'bow': {
         'awkward': {
@@ -582,6 +591,15 @@ DAMAGE_REFORGES = {
         }
     },
     'armor': {
+        'warped': {
+            'common': {'strength': 2, 'attack speed': 2, 'speed': 1},
+            'uncommon': {'strength': 4, 'attack speed': 3, 'speed': 1},
+            'rare': {'strength': 6, 'attack speed': 4, 'speed': 2},
+            'epic': {'strength': 7, 'attack speed': 5, 'speed': 2},
+            'legendary': {'strength': 10, 'attack speed': 6, 'speed': 3},
+            'mythic': {'strength': 12, 'attack speed': 7, 'speed': 3},
+            'blacksmith': False
+        },
         'smart': {
             'common': {'defense': 4, 'health': 4, 'intelligence': 20},
             'uncommon': {'defense': 6, 'health': 6, 'intelligence': 40},
@@ -700,14 +718,13 @@ DAMAGE_REFORGES = {
             'mythic': {'strength': 15, 'health': 30},
             'blacksmith': False
         },
-        'warped': {
-            # Gain +1/2/3/4/5 Speed icon Speed for 5s
-            'common': {'strength': 2, 'speed': 1, 'attack speed': 2},
-            'uncommon': {'strength': 4, 'speed': 1, 'attack speed': 3},
-            'rare': {'strength': 6, 'speed': 2, 'attack speed': 4},
-            'epic': {'strength': 7, 'speed': 2, 'attack speed': 5},
-            'legendary': {'strength': 10, 'speed': 3, 'attack speed': 6},
-            'mythic': {'strength': 12, 'speed': 4, 'attack speed': 7},
+        'reinforced': {
+            'common': {'defense': 25},
+            'uncommon': {'defense': 35},
+            'rare': {'defense': 50},
+            'epic': {'defense': 65},
+            'legendary': {'defense': 80},
+            'mythic': {'defense': 100},
             'blacksmith': False
         }
     },
