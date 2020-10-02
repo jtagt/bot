@@ -35,8 +35,24 @@ class Profile:
         self.weapon = None
         self.pet = None
 
-        # Dungeon skill level, will be set if there is a dungeon item
-        self.dungeon_skill = 0
+        # Load dungeon stats
+        self.dungeon_stats = {}
+        for dungeon in DUNGEONS:
+            self.dungeon_stats[dungeon] = self.profile_data.get('dungeons', {}).get('dungeon_types', {}).get(dungeon,
+                                                                                                             {})
+            if 'experience' in self.dungeon_stats[dungeon]:
+                self.dungeon_stats[dungeon]['level'] = level_from_xp_table(self.dungeon_stats[dungeon]['experience'],
+                                                                           DUNGEON_SKILL_LEVEL_REQUIREMENT)
+
+        # Load dungeon classes stats
+        self.selected_dungeon_class = self.profile_data.get('dungeons', {}).get('selected_dungeon_class', None)
+        self.dungeon_classes_xp = {}
+        self.dungeon_classes = {}
+        for dungeon_class in DUNGEON_CLASSES:
+            class_xp = self.profile_data.get('dungeons', {}).get('player_classes', {}).get(dungeon_class, {}).get(
+                'experience', 0)
+            self.dungeon_classes_xp[dungeon_class] = class_xp
+            self.dungeon_classes[dungeon_class] = level_from_xp_table(class_xp, DUNGEON_SKILL_LEVEL_REQUIREMENT)
 
         # Load profile's bank data if banking api is enabled
         self.bank_balance = 0.00
@@ -111,6 +127,10 @@ class Profile:
 
         for skill_name, skill_level in self.skills.items():
             self.stats += ProfileStats(SKILL_REWARDS[skill_name][skill_level])
+
+        # TODO: FIX ME
+        self.stats.dungeon_bonus = ACCUMULATED_CATACOMB_LEVEL_REWARDS['dungeon bonus'][
+            self.dungeon_stats[DUNGEONS[0]].get('level', 0)]
 
         # Load profile's current equipped armor
         for armor in self._parse_inventory(self.profile_data, ['inv_armor', 'data']):

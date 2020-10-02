@@ -64,7 +64,8 @@ PET_EMOJIS = {
 DAMAGE_POTIONS = {
     'dungeon': {
         'stats': {'strength': [0, 20, 20, 20, 30, 30], 'crit chance': [0, 10, 10, 15, 15, 20],
-                  'crit damage': [0, 10, 10, 20, 20, 30], 'speed': [0, 5, 10, 10, 10, 10], 'defense': [0, 5, 5, 10, 15, 20],
+                  'crit damage': [0, 10, 10, 20, 20, 30], 'speed': [0, 5, 10, 10, 10, 10],
+                  'defense': [0, 5, 5, 10, 15, 20],
                   'archery bonus': [0, 0, 0, 0, 12.5, 25]},
         'levels': [0, 1, 3, 4, 5]
     },
@@ -122,6 +123,14 @@ SKILL_EMOJIS = {
     'wolf': '🐺',
     'slayers': '☠️',
     'dungeons': '⚔️'
+}
+
+DUNGEON_EMOJIS = {
+    'healer': '❤️',
+    'mage': '🧙‍',
+    'berserk': '⚔️',
+    'archer': '🏹',
+    'tank': '🛡️'
 }
 
 SKYBLOCK_EVENTS = {

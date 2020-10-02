@@ -73,7 +73,8 @@ class Guild:
         self.skills_xp = {}
         self.slayers = {}
         self.slayers_xp = {}
-        self.average_dungeon_level = 0
+        self.dungeons = {}
+        self.dungeons_xp = {}
 
         self.all_members_skill_average = {}
         self.all_members_unique_minions = {}
@@ -83,7 +84,8 @@ class Guild:
         self.all_members_slayers = {}
         self.all_members_slayers_xp = {}
         self.all_members_total_slayers_xp = {}
-        self.all_members_dungeon_level = {}
+        self.all_members_dungeons = {}
+        self.all_members_dungeons_xp = {}
 
     def __str__(self):
         return self.name
@@ -115,7 +117,6 @@ class Guild:
         total_average_skills = 0.00
         total_minion_slots = 0
         total_unique_minions = 0
-        total_dungeon_level = 0
 
         total_skills = {'farming': 0, 'mining': 0, 'combat': 0, 'foraging': 0, 'fishing': 0, 'enchanting': 0,
                         'alchemy': 0, 'taming': 0, 'carpentry': 0, 'runecrafting': 0}
@@ -124,6 +125,10 @@ class Guild:
 
         total_slayers = {'zombie': 0, 'spider': 0, 'wolf': 0}
         total_slayers_xp = {'zombie': 0, 'spider': 0, 'wolf': 0}
+
+        total_dungeons = {'catacombs': 0}
+        total_dungeons_xp = {'catacombs': 0}
+
         for member in self.guild_members:
             player = member.player
             profile = player.profile
@@ -138,7 +143,6 @@ class Guild:
             self.all_members_slayers.update({player.uname: copy.deepcopy(profile.slayers)})
             self.all_members_slayers_xp.update({player.uname: copy.deepcopy(profile.slayers_xp)})
             self.all_members_total_slayers_xp.update({player.uname: profile.total_slayer_xp})
-            self.all_members_dungeon_level.update({player.uname: profile.dungeon_skill})
 
             self.current_online += player.online
             total_deaths += profile.deaths
@@ -146,7 +150,6 @@ class Guild:
             total_average_skills += profile.skill_average
             total_minion_slots += profile.minion_slots
             total_unique_minions += profile.unique_minions
-            total_dungeon_level += profile.dungeon_skill
 
             for skill in total_skills.keys():
                 total_skills[skill] += profile.skills.get(skill, 0)
@@ -156,12 +159,19 @@ class Guild:
                 total_slayers[slayer] += profile.slayers.get(slayer, 0)
                 total_slayers_xp[slayer] += profile.slayers_xp.get(slayer, 0)
 
+            for dungeon in total_dungeons.keys():
+                self.all_members_dungeons.update(
+                    {player.uname: {dungeon: profile.dungeon_stats[dungeon].get('level', 0)}})
+                self.all_members_dungeons_xp.update(
+                    {player.uname: {dungeon: profile.dungeon_stats[dungeon].get('experience', 0)}})
+                total_dungeons[dungeon] += profile.dungeon_stats[dungeon].get('level', 0)
+                total_dungeons_xp[dungeon] += profile.dungeon_stats[dungeon].get('experience', 0)
+
         self.average_deaths = total_deaths // self.member_amount
         self.average_money = total_money / self.member_amount
         self.average_skills = total_average_skills / self.member_amount
         self.minion_slot = total_minion_slots // self.member_amount
         self.unique_minions = total_unique_minions // self.member_amount
-        self.average_dungeon_level = total_dungeon_level / self.member_amount
 
         for skill in total_skills.keys():
             self.skills[skill] = total_skills[skill] // self.member_amount
@@ -170,6 +180,10 @@ class Guild:
         for slayer in total_slayers.keys():
             self.slayers[slayer] = total_slayers[slayer] // self.member_amount
             self.slayers_xp[slayer] = total_slayers_xp[slayer] / self.member_amount
+
+        for dungeon in total_dungeons.keys():
+            self.dungeons[dungeon] = total_dungeons[dungeon] // self.member_amount
+            self.dungeons_xp[dungeon] = total_dungeons_xp[dungeon] / self.member_amount
 
 
 class GuildMember:

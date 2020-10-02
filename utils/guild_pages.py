@@ -87,10 +87,12 @@ class GuildPages(Pages):
                           f'XP > {guild.slayers_xp.get(slayer, 0):,.0f}```'
                 )
 
-            self.embed.add_field(
-                name=f'{SKILL_EMOJIS["dungeons"]}\tDungeon Catacombs',
-                value=f'```Average Level > {guild.average_dungeon_level:.2f}```'
-            )
+            for dungeon, level in guild.dungeons.items():
+                self.embed.add_field(
+                    name=f'{SKILL_EMOJIS["dungeons"]}\t{dungeon.capitalize()}',
+                    value=f'```Level > {level}\n'
+                          f'XP > {guild.dungeons_xp.get(dungeon, 0):,.0f}```'
+                )
 
     async def show_guild_pages_help(self):
         """

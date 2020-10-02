@@ -8,7 +8,7 @@ import pytz
 
 from lib import Guild, ExternalAPIError, BadNameError, BadGuildError
 from . import Embed
-from constants import MOBS_RELEVANT_ENCHANTS, ENCHANTMENT_BONUS, STAT_NAMES, SKILL_NAMES, SLAYER_NAMES
+from constants import MOBS_RELEVANT_ENCHANTS, ENCHANTMENT_BONUS, STAT_NAMES, SKILL_NAMES, SLAYER_NAMES, DUNGEONS
 from constants.discord import TIMEOUT_EMOJIS
 from constants.db_schema import GUILD_CONFIG
 
@@ -136,17 +136,16 @@ def emod(activity, weapon):
     return result
 
 
-def get_stats_from_description(desc, *, dungeon=False):
+def get_stats_from_description(desc):
     """
     Get item stats from clean description and estimated total dungeon bonus.
     Return item stats dict, item reforge stats dict, estimated total dungeon bonus value.
     """
     stat_regex = re.compile('([\w ]*): \D?(\d*\.?\d*)(.*)')
     reforge_regex = re.compile('.*\(([\w ]*) \+(\d*)')
-    dungeon_regex = re.compile('.*\(\D?(\d*\.\d*).*\)')
     stats = {}
     reforge_stats = {}
-    dungeon_bonus = 1.00
+
     for line in desc:
         stat_match = stat_regex.match(line)
         if stat_match is None:
@@ -173,22 +172,7 @@ def get_stats_from_description(desc, *, dungeon=False):
                     reforge_value = float(reforge_value)
                     reforge_stats[stat_type] = reforge_value
 
-            if dungeon and stat_type not in ('crit chance', 'attack speed'):
-                dungeon_match = dungeon_regex.match(stat_match.group(3))
-                if dungeon_match is None:
-                    continue
-
-                dungeon_stat = dungeon_match.group(1)
-                if not dungeon_stat:
-                    continue
-                dungeon_stat = float(dungeon_stat)
-
-                if dungeon_stat < stat_value:
-                    continue  # if the matched stat is less than main stat
-
-                dungeon_bonus = float(dungeon_stat / stat_value)
-
-    return stats, reforge_stats, dungeon_bonus
+    return stats, reforge_stats
 
 
 def closest(lst, k):
@@ -287,11 +271,14 @@ def get_guild_leaderboard(guild):
     all_leaderboard['Total Slayer XP'] = total_slayer_xp_leaderboard
 
     # Dungeon level leaderboard
-    dungeon_level_leaderboard = sorted(guild.all_members_dungeon_level, reverse=True,
-                                       key=lambda member: guild.all_members_dungeon_level[member])
-    dungeon_level_leaderboard = [f'#{str(i + 1).ljust(3)} {member} > Level {guild.all_members_dungeon_level[member]}'
-                                 for i, member in enumerate(dungeon_level_leaderboard)]
-    all_leaderboard['Dungeon Level'] = dungeon_level_leaderboard
+    for dungeon in DUNGEONS:
+        dungeon_level_leaderboard = sorted(guild.all_members_dungeons, reverse=True,
+                                           key=lambda member: guild.all_members_dungeons[member].get(dungeon, 0))
+        dungeon_level_leaderboard = [
+            f'#{str(i + 1).ljust(3)} {member} > {guild.all_members_dungeons_xp[member].get(dungeon, 0):,.0f} '
+            f'[{guild.all_members_dungeons[member].get(dungeon, 0)}]' for i, member in
+            enumerate(dungeon_level_leaderboard)]
+        all_leaderboard[dungeon] = dungeon_level_leaderboard
 
     return all_leaderboard
 

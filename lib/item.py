@@ -75,20 +75,11 @@ class Item:
                     break
 
         # Load item stats
-        stats, reforge_stat, dungeon_bonus = get_stats_from_description(self.description_clean, dungeon=self.dungeon)
+        stats, reforge_stat = get_stats_from_description(self.description_clean)
         self.stats = ItemStats(stats, item=self, dungeon=self.dungeon)
         self.stats.reforge_stat = reforge_stat
         if self.dungeon:
             self.stats.dungeon_bonus += self.dungeon_level / 10
-
-        # Check and get profile's catacomb dungeon bonus + level based on dungeon bonus from description.
-        # Only when the item is a dungeon item + there's a dungeon bonus from item and profile dungeon level hasn't been set.
-        if self.dungeon and dungeon_bonus > 1.00 and self.profile.dungeon_skill == 0:
-            relative_dungeon_bonus = (dungeon_bonus - (1 + self.dungeon_level / 10)) * 100
-            total_dungeon_bonus, dungeon_level = closest(ACCUMULATED_CATACOMB_LEVEL_REWARDS['dungeon bonus'],
-                                                         relative_dungeon_bonus)
-            self.profile.dungeon_skill = dungeon_level
-            self.profile.stats.dungeon_bonus += total_dungeon_bonus / 100
 
         self.get_item_stats_extra()
 
