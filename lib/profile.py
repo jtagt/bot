@@ -130,7 +130,7 @@ class Profile:
 
         # TODO: FIX ME
         self.stats.dungeon_bonus = ACCUMULATED_CATACOMB_LEVEL_REWARDS['dungeon bonus'][
-            self.dungeon_stats[DUNGEONS[0]].get('level', 0)]
+            self.dungeon_stats[DUNGEONS[0]].get('level', 0)] / 100
 
         # Load profile's current equipped armor
         for armor in self._parse_inventory(self.profile_data, ['inv_armor', 'data']):
