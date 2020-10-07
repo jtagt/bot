@@ -465,14 +465,15 @@ class OptimizeGear(commands.Cog, name='Damage'):
         if len(m) > 1:
             if m[1] == 'ignore' and len(m[2:]) > 0:
                 ignore = m[2:]
+                cant_ignore = ignore
                 for equip in reforges:
                     for reforge in list(reforges[equip]):
                         if reforge in ignore:
                             ignored.append(reforge)
                             reforges[equip].pop(reforge)
-                            ignore.remove(reforge)
-                if len(ignore) > 0:
-                    return ignore
+                            cant_ignore.remove(reforge)
+                if len(cant_ignore) > 0:
+                    return cant_ignore
             else:
                 return None
         return only_blacksmith, reforges, ignored
