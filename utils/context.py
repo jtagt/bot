@@ -18,6 +18,7 @@ class Context(commands.Context):
                 ('❌', False)
             ]
 
+        # TODO: FIX ME
         self.bot.loop.create_task(self.send_in_task(message, emoji_list, embed=embed))
 
         answer = None
