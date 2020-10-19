@@ -9,7 +9,6 @@ import pytz
 from lib import Guild, ExternalAPIError, BadNameError, BadGuildError
 from . import Embed
 from constants import MOBS_RELEVANT_ENCHANTS, ENCHANTMENT_BONUS, STAT_NAMES, SKILL_NAMES, SLAYER_NAMES, DUNGEONS
-from constants.discord import TIMEOUT_EMOJIS
 from constants.db_schema import GUILD_CONFIG
 
 EST = pytz.timezone('US/Eastern')
@@ -34,8 +33,6 @@ async def get_from_name_uuid(name_uuid, *, session, with_history=False):
     except aiohttp.ClientResponseError as e:
         if e.status == 429:
             raise ExternalAPIError('Ashcon API ratelimit has been reached!') from None
-        else:
-            raise BadNameError(name_uuid) from None
 
 
 def level_from_xp_table(xp, table):
@@ -112,14 +109,10 @@ async def embed_timeout_handler(ctx, emoji_list, message=None):
     message = message or ctx.message
     try:
         await message.clear_reactions()
-        for emoji in TIMEOUT_EMOJIS:
-            await message.add_reaction(emoji)
     except Exception:
         try:
             for (emoji, _) in emoji_list:
                 await message.remove_reaction(emoji, ctx.bot.user)
-            for emoji in TIMEOUT_EMOJIS:
-                await message.add_reaction(emoji)
         except Exception:
             pass
 

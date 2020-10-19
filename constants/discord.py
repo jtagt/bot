@@ -1,5 +1,3 @@
-TIMEOUT_EMOJIS = ['🇹', '🇮', '🇲', '🇪', '🇴', '🇺', '✝️']
-
 OPTIMIZER_GOALS = [
     {'emoji': '💯', 'name': 'Perfect crit chance'},
     {'emoji': '💥', 'name': 'Maximum damage'}
