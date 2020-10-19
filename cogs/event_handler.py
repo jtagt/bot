@@ -34,8 +34,11 @@ class EventHandler(commands.Cog):
                 return
 
             discord_username['current_name'] = after.name
-            if len(discord_username['name_history']) == 5:
-                discord_username.pop(0)
+            if len(discord_username['name_history']) >= 5:
+                try:
+                    discord_username.pop(0)
+                except KeyError:
+                    pass
             discord_username['name_history'].append({
                 'name': before.name,
                 'updated_timestamp': discord_username['updated_timestamp']
