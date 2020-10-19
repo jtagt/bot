@@ -9,3 +9,5 @@ from .context import Context
 from .guild_pages import GuildPages
 from .scheduler import Scheduler
 from .event_pages import EventPages
+from .rep_config_pages import RepConfigPages
+from .rep_review_pages import RepReviewPages

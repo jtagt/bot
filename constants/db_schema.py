@@ -69,11 +69,18 @@ REPUTATION = {
     'guild_id': None,
     'reported_discord_id': None,
     'submitter_discord_id': None,
-    'reason': None,
+    'reason': '',
     'positive': True,
     'type': None,
     'staff_sorted_discord_id': None,
     'submitted_timestamp': None
+}
+
+REP_CATEGORY = {
+    'guild_id': None,
+    'name': None,
+    'description': '',
+    'enabled': True
 }
 
 REPORT = {
