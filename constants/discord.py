@@ -60,12 +60,16 @@ PET_EMOJIS = {
 }
 
 DAMAGE_POTIONS = {
+    'god': {
+        'stats': {'strength': [0, 78.8], 'crit chance': [0, 25], 'crit damage': [0, 40], 'speed': [0, 228], 'defense': [0, 66], 'archery bonus': [0,80]},
+        'levels': [0, 1]
+    },
     'dungeon': {
-        'stats': {'strength': [0, 20, 20, 20, 30, 30], 'crit chance': [0, 10, 10, 15, 15, 20],
-                  'crit damage': [0, 10, 10, 20, 20, 30], 'speed': [0, 5, 10, 10, 10, 10],
-                  'defense': [0, 5, 5, 10, 15, 20],
-                  'archery bonus': [0, 0, 0, 0, 12.5, 25]},
-        'levels': [0, 1, 3, 4, 5]
+        'stats': {'strength': [0, 20, 20, 20, 30, 30, 30], 'crit chance': [0, 10, 10, 15, 15, 20, 20],
+                  'crit damage': [0, 10, 10, 20, 20, 30, 30], 'speed': [0, 5, 10, 10, 10, 10, 15],
+                  'defense': [0, 5, 5, 10, 15, 20, 20],
+                  'archery bonus': [0, 0, 0, 0, 12.5, 25, 50]},
+        'levels': [0, 1, 2, 3, 4, 5, 6]
     },
     'critical': {
         'stats': {'crit chance': [0, 10, 15, 20, 25], 'crit damage': [0, 10, 20, 30, 40]},

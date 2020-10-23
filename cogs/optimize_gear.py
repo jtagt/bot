@@ -398,7 +398,7 @@ class OptimizeGear(commands.Cog, name='Damage'):
                 else:
                     profile.stats.add_stat(stat, amount[selected_level])
 
-            if name == 'dungeon' and selected_level > 0:
+            if name == 'dungeon' and selected_level > 0 or name == 'god' and selected_level == 0:
                 break
         return selected_pots
 
