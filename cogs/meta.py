@@ -45,9 +45,9 @@ class Meta(commands.Cog, name='Bot'):
         """
         Displays stats about the bot including number of servers and users.
         """
-        server_rankings = sorted(self.bot.guilds, key=lambda guild: len(guild.members), reverse=True)[:10]
-        #server_rankings = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
-        #    [f'{guild.name[:28].ljust(28)} | {len(guild.members)}' for guild in server_rankings])
+        server_rankings = sorted(self.bot.guilds, key=lambda guild: guild.member_count, reverse=True)[:10]
+        #server_rankings2 = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
+        #    [f'{guild.name[:28].ljust(28)} | {guild.member_count}' for guild in server_rankings])
 
         embed = Embed(
             ctx=ctx,
@@ -59,7 +59,7 @@ class Meta(commands.Cog, name='Bot'):
             inline=True,
         ).add_field(
             name='Users',
-            value='\n'.join([f'{len(guild.members):,}' for guild in server_rankings]),
+            value='\n'.join([f'{guild.member_count}' for guild in server_rankings]),
             inline=True,
         ).add_field(
             name='\u200b',
