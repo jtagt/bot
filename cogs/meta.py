@@ -52,7 +52,7 @@ class Meta(commands.Cog, name='Bot'):
         embed = Embed(
             ctx=ctx,
             title='SkyBlock Simplified Bot Stats',
-            description=f'This command was run on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.'
+            description=f'This discord server in on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.'
         ).add_field(
             name='Top Servers',
             value='\n'.join([f'{guild.name}' for guild in server_rankings]),
@@ -71,7 +71,7 @@ class Meta(commands.Cog, name='Bot'):
             inline=False
         ).add_field(
             name='Users',
-            value=f'There are currently {sum(len(guild.members) for guild in self.bot.guilds):,} users with access to the bot.',
+            value=f'There are currently {sum(guild.member_count for guild in self.bot.guilds):,} users with access to the bot.',
             inline=False
         )
 
@@ -81,7 +81,7 @@ class Meta(commands.Cog, name='Bot'):
         for x in self.bot.guilds:
             shards[x.shard_id][0] += 1
             shards[x.shard_id][1] += len(x.text_channels)
-            shards[x.shard_id][2] += len(x.members)
+            shards[x.shard_id][2] += x.member_count
 
         for x in range(self.bot.shard_count):
             embed.add_field(
