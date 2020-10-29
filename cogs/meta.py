@@ -46,13 +46,13 @@ class Meta(commands.Cog, name='Bot'):
         Displays stats about the bot including number of servers and users.
         """
         server_rankings = sorted(self.bot.guilds, key=lambda guild: len(guild.members), reverse=True)[:10]
-        #server_rankings = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
-        #    [f'{guild.name[:28].ljust(28)} | {len(guild.members)}' for guild in server_rankings])
+        server_rankings2 = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
+            [f'{guild.name[:28].ljust(28)} | {len(guild.members)}' for guild in server_rankings])
 
         embed = Embed(
             ctx=ctx,
             title='SkyBlock Simplified Bot Stats',
-            description=f'This command was run on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.'
+            description=f'This command was run on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.\n```{server_rankings2}```'
         ).add_field(
             name='Top Servers',
             value='\n'.join([f'{guild.name}' for guild in server_rankings]),
