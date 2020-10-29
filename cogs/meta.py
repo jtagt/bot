@@ -46,13 +46,25 @@ class Meta(commands.Cog, name='Bot'):
         Displays stats about the bot including number of servers and users.
         """
         server_rankings = sorted(self.bot.guilds, key=lambda guild: len(guild.members), reverse=True)[:10]
-        server_rankings = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
-            [f'{guild.name[:28].ljust(28)} | {len(guild.members):,}' for guild in server_rankings])
+        #server_rankings = f'{"Top Servers".ljust(28)} | Users\n' + '\n'.join(
+        #    [f'{guild.name[:28].ljust(28)} | {len(guild.members)}' for guild in server_rankings])
 
         embed = Embed(
             ctx=ctx,
-            title='Discord Stats',
-            description=f'This command was run on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.\n```{server_rankings}```'
+            title='SkyBlock Simplified Bot Stats',
+            description=f'This command was run on shard {(ctx.guild.shard_id if ctx.guild else 0) + 1} / {self.bot.shard_count}.'
+        ).add_field(
+            name='Top Servers',
+            value='\n'.join([f'{guild.name}' for guild in server_rankings]),
+            inline=True,
+        ).add_field(
+            name='Users',
+            value='\n'.join([f'{len(guild.members):,}' for guild in server_rankings]),
+            inline=True,
+        ).add_field(
+            name='\u200b',
+            value='\u200b',
+            inline=True,
         ).add_field(
             name='Servers',
             value=f'{self.bot.user.name} is running in {len(self.bot.guilds):,} servers with {sum(len(guild.text_channels) for guild in self.bot.guilds):,} channels.',
@@ -62,6 +74,7 @@ class Meta(commands.Cog, name='Bot'):
             value=f'There are currently {sum(len(guild.members) for guild in self.bot.guilds):,} users with access to the bot.',
             inline=False
         )
+
         shards = []
         for x in range(self.bot.shard_count):
             shards.append([0, 0, 0])
@@ -77,15 +90,33 @@ class Meta(commands.Cog, name='Bot'):
                 inline=True
             )
 
+        shard_count = len(shards)
+        total_fields = 3 * round((shard_count + 3) / 3)
+        remaining_fields = total_fields - shard_count
+
+        # column adjustment
+        for x in range(remaining_fields):
+            embed.add_field(
+                name='\u200b',
+                value='\u200b',
+                inline=True
+            )
+
         memory_usage = self.process.memory_full_info().uss / 1024 ** 2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
         embed.add_field(
             name='Process',
             value=f'{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU',
-            inline=False
+            inline=True
+        ).add_field(
+            name='Latency',
+            value=f'{self.bot.latency * 1000:.0f} ms',
+            inline=True
+        ).add_field(
+            name='\u200b',
+            value='\u200b',
+            inline=True
         )
-
-        embed.add_footer(text=f'This message was delivered in {self.bot.latency * 1000:.0f} milliseconds.')
 
         await embed.send()
 
@@ -96,8 +127,8 @@ class Meta(commands.Cog, name='Bot'):
         """
         await Embed(
             ctx=ctx,
-            title='Here\'s an invite link',
-            description='[Click me to invite the bot](https://tinyurl.com/add-sbs)'
+            title='SkyBlock Simplified Bot Invite',
+            description='[Click Here to invite the bot](https://skyblocksimplified.com/bot/invite/alternate)'
         ).send()
 
     @commands.command()
