@@ -4,7 +4,6 @@ from datetime import datetime
 
 class Embed(discord.Embed):
     nbst = '\u200b'
-    footer_top = []
 
     def __init__(self, *, ctx=None, channel=None, user=None, **kwargs):
         if ctx and not channel:
@@ -30,24 +29,21 @@ class Embed(discord.Embed):
         return super().add_field(name=f'**{name}**' if name else self.nbst, value=value, inline=inline)
 
     def add_footer(self, text):
-        self.footer_top.append(text)
-        """
         super().set_footer(
             text=f'{text}\nSkyBlock Simplified',
             icon_url='https://skyblocksimplified.com/discord/images/logo.gif'
         )
-        """
+
         return self
 
     async def send(self, *, dm=False, dm_extra=False):
         self.timestamp = datetime.now()
-        footer_append = '\n'.join(self.footer_top)
 
-        #if not self.footer:
-        super().set_footer(
-            text=f'{footer_append}\nSkyBlock Simplified',
-            icon_url='https://skyblocksimplified.com/discord/images/logo.gif'
-        )
+        if not self.footer:
+            super().set_footer(
+                text='SkyBlock Simplified',
+                icon_url='https://skyblocksimplified.com/discord/images/logo.gif'
+            )
 
         if dm and not isinstance(self.channel, discord.DMChannel):
             msg = await self.user.send(self.user.mention, embed=self)
