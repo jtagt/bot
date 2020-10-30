@@ -21,7 +21,7 @@ def format_counts(counts):
 
 
 def solve(m):
-    s = SolverFactory('scip', executable='scipampl', verbose=1)
+    s = SolverFactory('scip', executable='scip')
     s.options['limits/time'] = SCIP_TIMELIMIT
     result = s.solve(m)
     if result.solver.status == SolverStatus.aborted and result.solver.termination_condition == TerminationCondition.maxTimeLimit:
