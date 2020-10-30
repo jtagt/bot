@@ -168,7 +168,7 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
     m.eqn.add(
         m.a == m.m * (a_rule + profile.stats.get_stat('attack speed', base=True, raw=True, dungeon=include_dungeon)))
     if attack_speed_limit:
-        m.eqn.add(attack_speed_limit >= m.a)
+        m.eqn.add(m.a <= attack_speed_limit)
     # ---
 
     # --- strength ---
@@ -251,13 +251,13 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
 #     if only_blacksmith_reforges:
 #         return '''Reforge all your armor to wise
 # Reforge all your common talismans to demonic
-# Reforge all your other talismans to bizzare
+# Reforge all your other talismans to bizarre
 # Reforge your sword/fishing rod to heroic
 # Reforge your bow to deadly'''
 #     else:
 #         return '''Reforge all your armor to necrotic
 # Reforge all your common talismans to demonic
-# Reforge all your other talismans to bizzare
+# Reforge all your other talismans to bizarre
 # Reforge your sword/fishing rod to heroic
 # Reforge your bow to deadly'''
 #

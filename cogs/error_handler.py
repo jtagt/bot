@@ -84,7 +84,7 @@ class ErrorHandler(commands.Cog):
         elif isinstance(error, commands.TooManyArguments):
             # await CommandErrorEmbed(
             #     ctx,
-            #     description='You provided too many arugments for this command.'
+            #     description='You provided too many arguments for this command.'
             # ).send()
             await self.get_help_command(ctx)
         elif isinstance(error, commands.BadArgument):

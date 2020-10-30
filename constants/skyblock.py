@@ -618,7 +618,7 @@ DAMAGE_REFORGES = {
         }
     },
     'armor': {
-        'warped': {
+        'warped stone': {
             'common': {'strength': 2, 'attack speed': 2, 'speed': 1},
             'uncommon': {'strength': 4, 'attack speed': 3, 'speed': 1},
             'rare': {'strength': 6, 'attack speed': 4, 'speed': 2},

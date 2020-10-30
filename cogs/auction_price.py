@@ -5,7 +5,7 @@ from utils import Embed, CommandWithCooldown, get_item_price_stats, get_item_lis
 
 class AuctionPrice(commands.Cog, name='Auction'):
     """
-    View average prices for items aswell as past auctions for any player.
+    View average prices for items as well as past auctions for any player.
     """
 
     emoji = '💸'

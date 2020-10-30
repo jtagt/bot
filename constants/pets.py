@@ -62,6 +62,10 @@ def _pigman(profile, *, dungeon=False):
         profile.weapon.stats.add_stat('damage', profile.pet.level * 0.4)
         profile.weapon.stats.add_stat('strength', profile.pet.level * 0.25)
 
+def _griffin(profile, *, dungeon=False):
+    # (1 + 0.14x) % extra strength (leg)
+    if profile.pet.rarity == 'legendary':
+        profile.stats.add_modifier('strength', lambda stat: stat + (stat * (1.01 + 0.0014 * profile.pet.level)))
 
 def _elephant(profile, *, dungeon=False):  # (tbd)
     if profile.pet.rarity in ('common', 'uncommon', 'rare'):
@@ -680,7 +684,7 @@ PETS = {
             'magic find': lambda lvl: lvl / 10,
             'intelligence': lambda lvl: lvl / 10
         },
-        'ability': None,
+        'ability': _griffin,
         'type': 'combat'
     },
     'MEGALODON': {
