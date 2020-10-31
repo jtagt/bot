@@ -143,3 +143,11 @@ class HypixelAPIClient:
         """
         data = await self.get('guild', raise_for_status=raise_for_status, **kwargs)
         return data['guild']
+
+    async def get_bazaar_products(self, *, raise_for_status: bool = True, **kwargs):
+        """
+        Hypixel API get bazaar products.
+        """
+        data = await self.get('skyblock/bazaar', raise_for_status=raise_for_status, **kwargs)
+        return data['products']
+

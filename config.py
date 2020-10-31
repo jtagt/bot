@@ -25,8 +25,8 @@ COG_EXTENSIONS = [
     'cogs.damage_calculator',
     'cogs.optimize_gear',
     'cogs.view_missing',
-    # Auction commands
-    'cogs.auction_price',
+    # Item commands
+    'cogs.item_price',
     # Spy commands
     'cogs.view_guild',
     'cogs.view_player',

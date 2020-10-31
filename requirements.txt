@@ -1,5 +1,5 @@
 discord.py
-aiohttp~=3.6.2
+aiohttp~=3.6.3
 async-timeout
 motor~=2.2.0
 python-dotenv~=0.14.0

@@ -93,6 +93,15 @@ async def get_item_list(item_name, *, session):
         raise ExternalAPIError('Could not connect to https://auctions.craftlink.xyz.') from None
 
 
+async def get_bazaar_product_prices(hypixel_api_client):
+    """
+    Fetches bazaar products price data.
+    """
+    bazaar_products = await hypixel_api_client.get_bazaar_products()
+
+    return bazaar_products
+
+
 def colorize(s, color):
     language, point = color
     s = str(s)
