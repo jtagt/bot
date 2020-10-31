@@ -166,6 +166,7 @@ TALISMANS = {re.compile(k): v for k, v in {
     'ARTIFACT_POTION_AFFINITY': 'Potion Affinity Artifact',
     'SEA_CREATURE_ARTIFACT': 'Sea Creature Artifact',
     'CANDY_ARTIFACT': 'Candy Artifact',
+    'CANDY_RELIC': 'Candy Relic',
     'MELODY_HAIR': '♪ Melody\'s Hair ♪',
     'EXPERIENCE_ARTIFACT': 'Experience Artifact',
     'PARTY_HAT_CRAB': 'Crab Hat of Celebration',
@@ -174,6 +175,7 @@ TALISMANS = {re.compile(k): v for k, v in {
     'CHEETAH_TALISMAN': 'Cheetah Talisman',
     'DEVOUR_RING': 'Devour Ring',
     'BAT_ARTIFACT': 'Bat Artifact',
+    'BAT_PERSON_ARTIFACT': 'Bat Person Artifact',
     'CAMPFIRE_TALISMAN_(21|22|23|24|25|26|27|28|29)': 'Campfire God Badge',
     'SURVIVOR_CUBE': 'Survivor Cube',
     'ZOMBIE_ARTIFACT': 'Zombie Artifact',
@@ -192,7 +194,8 @@ TALISMANS = {re.compile(k): v for k, v in {
     'SEAL_OF_THE_FAMILY': 'Seal of the Family',
     'RAZOR_SHARP_SHARK_TOOTH_NECKLACE': 'Razor-sharp Shark Tooth Necklace',
     'BEASTMASTER_CREST_LEGENDARY': 'Legendary Beastmaster Crest',
-    'TREASURE_ARTIFACT': 'Treasure Artifact'
+    'TREASURE_ARTIFACT': 'Treasure Artifact',
+    'HEGEMONY_ARTIFACT': 'Hegemony Artifact'
 }.items()}
 
 SKILL_NAMES = ['farming', 'mining', 'combat', 'foraging', 'fishing', 'enchanting', 'alchemy', 'taming', 'carpentry',
@@ -281,8 +284,9 @@ TIERED_TALISMANS = {
     'BAT_RING': ['BAT_ARTIFACT'],
     'BAT_TALISMAN': ['BAT_RING', 'BAT_ARTIFACT'],
     'BROKEN_PIGGY_BANK': ['CRACKED_PIGGY_BANK', 'PIGGY_BANK'],
-    'CANDY_RING': ['CANDY_ARTIFACT'],
-    'CANDY_TALISMAN': ['CANDY_RING', 'CANDY_ARTIFACT'],
+    'CANDY_ARTIFACT': ['CANDY_RELIC'],
+    'CANDY_RING': ['CANDY_ARTIFACT', 'CANDY_RELIC'],
+    'CANDY_TALISMAN': ['CANDY_RING', 'CANDY_ARTIFACT', 'CANDY_RELIC'],
     'CRACKED_PIGGY_BANK': ['PIGGY_BANK'],
     'CROOKED_ARTIFACT': ['SEAL_OF_THE_FAMILY'],
     'FEATHER_RING': ['FEATHER_ARTIFACT'],
@@ -618,6 +622,15 @@ DAMAGE_REFORGES = {
         }
     },
     'armor': {
+        'candied': {
+            'common': {'defense': 1, 'health': 1},
+            'uncommon': {'defense': 1, 'health': 2},
+            'rare': {'defense': 2, 'health': 4},
+            'epic': {'defense': 3, 'health': 6},
+            'legendary': {'defense': 4, 'health': 8},
+            'mythic': {'defense': 5, 'health': 10},
+            'blacksmith': False
+        },
         'warped stone': {
             'common': {'strength': 2, 'attack speed': 2, 'speed': 1},
             'uncommon': {'strength': 4, 'attack speed': 3, 'speed': 1},
@@ -756,6 +769,15 @@ DAMAGE_REFORGES = {
         }
     },
     'talisman': {
+        'sweet': {
+            'common': {'defense': 1, 'health': 3, 'speed': 1},
+            'uncommon': {'defense': 2, 'health': 4, 'speed': 1},
+            'rare': {'defense': 2, 'health': 6, 'speed': 2},
+            'epic': {'defense': 2, 'health': 8, 'speed': 2},
+            'legendary': {'defense': 4, 'health': 12, 'speed': 3},
+            'mythic': {'defense': 4, 'health': 16, 'speed': 4},
+            'blacksmith': False
+        },
         'bizarre': {
             'common': {'strength': 1, 'crit damage': -1, 'health': 1, 'intelligence': 6},
             'uncommon': {'strength': 2, 'crit damage': -2, 'health': 1, 'intelligence': 8},
