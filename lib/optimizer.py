@@ -39,7 +39,8 @@ def create_model(counts, reforge_set, only_blacksmith_reforges):
             if j in stats and count[j] > 0 and (only_blacksmith_reforges is False or stats['blacksmith'] is True)
         ], ordered=True
     )
-    m.reforge_counts = Var(m.reforge_set, domain=NonNegativeIntegers, initialize=0)
+    m.reforge_counts = Var(
+        m.reforge_set, domain=NonNegativeIntegers, initialize=0)
     m.eqn = ConstraintList()
     return m
 
@@ -81,8 +82,9 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
             if reforge == 'warped':
                 reforges_set['sword'].pop('warped')
                 break
-                
-    armor_types = [type for type, piece in profile.armor.items() if armor_check(type) == 'armor' and piece is not None]
+
+    armor_types = [type for type, piece in profile.armor.items(
+    ) if armor_check(type) == 'armor' and piece is not None]
     equipment_types = ['talisman', profile.weapon.type] + armor_types
 
     counts = {
@@ -108,10 +110,12 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
                 if rarity != 'blacksmith' and (
                         only_blacksmith_reforges is False or reforges[reforge]['blacksmith'] is True):
                     if counts[equipment_type][rarity] > 0:
-                        sums[rarity].append(m.reforge_counts[equipment_type, rarity, reforge])
+                        sums[rarity].append(
+                            m.reforge_counts[equipment_type, rarity, reforge])
         for rarity in RARITIES:
             if counts[equipment_type][rarity] > 0:
-                m.eqn.add(quicksum(sums[rarity], linear=False) == counts[equipment_type][rarity])
+                m.eqn.add(quicksum(sums[rarity], linear=False)
+                          == counts[equipment_type][rarity])
 
     # for stat in ['strength', 'crit damage'] + ['crit chance'] * perfect_crit_chance + ['attack speed'] * include_attack_speed:
     #     profile.stats.modifiers[stat].insert(0,
@@ -125,7 +129,8 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
     m.damage = Var(domain=Reals, initialize=10000)
     m.floored_strength = Var(domain=Integers, initialize=60)
     m.cc = Var(domain=Reals, initialize=100)
-    m.a = Var(domain=Reals, initialize=50)
+    if profile.weapon != 'LIVID_DAGGER':
+        m.a = Var(domain=Reals, initialize=50)
     if only_blacksmith_reforges:
         m.m = profile.stats.multiplier
     else:
@@ -138,7 +143,8 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
 
     # --- modifiers ---
     # manually add it here now, will find a better way to do it
-    cd_tara_helm = m.s / 10 if profile.armor['helmet'] == 'TARANTULA_HELMET' else 0
+    cd_tara_helm = m.s / \
+        10 if profile.armor['helmet'] == 'TARANTULA_HELMET' else 0
     # ---
 
     # --- weapon damage ---
@@ -151,12 +157,14 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
     # --- multiplier ---
     if not only_blacksmith_reforges:
         m.eqn.add(m.m == profile.stats.multiplier + (quicksum(
-            (m.reforge_counts[i, j, k] * 0.01 for i, j, k in m.reforge_set if i in armor_types and k == 'renowned'),
+            (m.reforge_counts[i, j, k] * 0.01 for i, j,
+             k in m.reforge_set if i in armor_types and k == 'renowned'),
             linear=False) if not only_blacksmith_reforges else 0))
     # ---
 
     # --- crit chance ---
-    cc_rule = create_constraint_rule('crit chance', m, counts, profile, reforges_set, include_dungeon)
+    cc_rule = create_constraint_rule(
+        'crit chance', m, counts, profile, reforges_set, include_dungeon)
     m.eqn.add(
         m.cc == m.m * (cc_rule + profile.stats.get_stat('crit chance', base=True, raw=True, dungeon=include_dungeon)))
     if perfect_crit_chance:
@@ -164,41 +172,53 @@ def damage_optimizer(profile, *, perfect_crit_chance, attack_speed_limit, only_b
     # ---
 
     # --- attack speed ---
-    a_rule = create_constraint_rule('attack speed', m, counts, profile, reforges_set, include_dungeon)
-    m.eqn.add(
-        m.a == m.m * (a_rule + profile.stats.get_stat('attack speed', base=True, raw=True, dungeon=include_dungeon)))
-    if attack_speed_limit:
-        m.eqn.add(m.a <= attack_speed_limit)
+    if profile.weapon != 'LIVID_DAGGER':
+        a_rule = create_constraint_rule(
+            'attack speed', m, counts, profile, reforges_set, include_dungeon)
+        m.eqn.add(
+            m.a == m.m * (a_rule + profile.stats.get_stat('attack speed', base=True, raw=True, dungeon=include_dungeon)))
+        if attack_speed_limit:
+            m.eqn.add(m.a <= attack_speed_limit)
     # ---
 
     # --- strength ---
-    strength_rule = create_constraint_rule('strength', m, counts, profile, reforges_set, include_dungeon)
+    strength_rule = create_constraint_rule(
+        'strength', m, counts, profile, reforges_set, include_dungeon)
     m.eqn.add(
         m.s == m.m * (strength_rule + profile.stats.get_stat('strength', base=True, raw=True, dungeon=include_dungeon)))
     # ---
 
     # --- crit damage ---
-    cd_rule = create_constraint_rule('crit damage', m, counts, profile, reforges_set, include_dungeon)
+    cd_rule = create_constraint_rule(
+        'crit damage', m, counts, profile, reforges_set, include_dungeon)
     m.eqn.add(m.cd == m.m * (cd_rule + profile.stats.get_stat('crit damage', base=True, raw=True,
                                                               dungeon=include_dungeon) + cd_tara_helm))
     # ---
 
     m.eqn.add(m.floored_strength >= m.s / 5 - 0.9999)
     m.eqn.add(m.floored_strength <= m.s / 5)
-    m.eqn.add(m.damage == (5 + m.wd + m.floored_strength) * (1 + m.s / 100) * (1 + m.cd / 100))
+    m.eqn.add(m.damage == (5 + m.wd + m.floored_strength)
+              * (1 + m.s / 100) * (1 + m.cd / 100))
 
-    m.objective = Objective(expr=m.damage * (((m.a + 100) / 100) / 0.5) if attack_speed_limit else m.damage,
-                            sense=maximize)
+    if profile.weapon != 'LIVID_DAGGER':
+        m.objective = Objective(expr=m.damage * (((m.a + 100) / 100) / 0.5) if attack_speed_limit else m.damage,
+                                sense=maximize)
+    else:
+        m.objective = Objective(expr=m.damage * (((100 + 100) / 100) / 0.5) if attack_speed_limit else m.damage,
+                                sense=maximize)
     is_optimized = solve(m)
 
     # debug stuff
     # from pyomo.util.infeasible import log_infeasible_constraints
     # log_infeasible_constraints(m, log_expression=True, log_variables=True)
 
+    result_atk_speed = 100
+    if profile.weapon != 'LIVID_DAGGER':
+        result_atk_speed = m.a()
     result = {'strength': m.s(),
               'crit damage': m.cd(),
               'crit chance': m.cc(),
-              'attack speed': m.a(),
+              'attack speed': result_atk_speed,
               'is optimized': is_optimized}
 
     if profile.weapon == 'MIDAS_SWORD' and not only_blacksmith_reforges:
